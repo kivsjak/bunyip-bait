@@ -1,0 +1,20 @@
+{
+  "name": "bunyip-bait",
+  "title": "Bunyip Bait",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Прототип кластерного слота Bunyip Bait (Stake Engine RGS) на Pixi 7. Розібраний з однофайлового prototype.html.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "pixi.js": "7.4.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0"
+  }
+}
