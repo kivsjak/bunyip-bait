@@ -13,7 +13,11 @@ export const round = {bet: 1_000_000};
 let inFS = false;
 const setWin = (hundredths: number) => { winEl.textContent = money(Math.round(round.bet * hundredths / 100)); };
 
-async function showBanner(html: string, ms = 1200) { banner.innerHTML = html; banner.classList.add("on"); await wait(ms); banner.classList.remove("on"); await wait(200); }
+async function showBanner(html: string, ms: number, kind: "fs" | "big" | "max") {
+  const bg = url(`ui/banner_${kind}`);
+  banner.style.backgroundImage = bg ? `url("${bg}")` : ""; banner.classList.toggle("has-bg", !!bg);
+  banner.innerHTML = html; banner.classList.add("on"); await wait(ms); banner.classList.remove("on"); await wait(200);
+}
 
 /* ---------------- маскоти ---------------- */
 const LINES: Record<string, [string, string]> = {
@@ -102,7 +106,7 @@ const H: Record<string, (e: BookEvent) => Promise<void>> = {
   async freeSpinTrigger(e) {
     say("fs"); inFS = true;
     resetCells(!!e.startMarks || e.startMultiplier > 0, e.startMultiplier || 0);
-    await showBanner(`${e.spins} ${tr("freeSpins")}<small>${e.scatters} × ${tr("cooler")}</small>`, 1500);
+    await showBanner(`${e.spins} ${tr("freeSpins")}<small>${e.scatters} × ${tr("cooler")}</small>`, 1500, "fs");
   },
   async freeSpinStart(e) {
     if (e.spin > 1) await wait(PAUSE.betweenFS);
@@ -110,14 +114,14 @@ const H: Record<string, (e: BookEvent) => Promise<void>> = {
     if (fsbar.animate && !reduceMotion) fsbar.animate([{transform: "translateX(-50%) scale(1.2)"}, {transform: "translateX(-50%) scale(1)"}], {duration: 300 / getSpeed()});
     await wait(PAUSE.beforeSpin);
   },
-  async retrigger(e) { fsbar.textContent = tr("freeSpin", {a: "…", b: e.of}); await showBanner(tr("moreSpins", {n: e.added}), 900); },
+  async retrigger(e) { fsbar.textContent = tr("freeSpin", {a: "…", b: e.of}); await showBanner(tr("moreSpins", {n: e.added}), 900, "fs"); },
   async setTotalWin(e) { setWin(e.amount); if (inFS) await wait(PAUSE.afterSpin); },
-  async maxWin(e) { setWin(e.amount); say("huge"); await showBanner(`${tr("maxWin")}<small>5,000×</small>`, 2200); },
+  async maxWin(e) { setWin(e.amount); say("huge"); await showBanner(`${tr("maxWin")}<small>5,000×</small>`, 2200, "max"); },
   async finalWin(e) {
     setWin(e.amount);
     const x = e.amount / 100; // у ставках
-    if (x >= 1000) { say("huge"); await showBanner(`${tr("bigWin")}<small>${money(Math.round(round.bet * e.amount / 100))}</small>`, 2200); }
-    else if (x >= 100) { say("big"); await showBanner(`${tr("bigWin")}<small>${money(Math.round(round.bet * e.amount / 100))}</small>`, 1600); }
+    if (x >= 1000) { say("huge"); await showBanner(`${tr("bigWin")}<small>${money(Math.round(round.bet * e.amount / 100))}</small>`, 2200, "big"); }
+    else if (x >= 100) { say("big"); await showBanner(`${tr("bigWin")}<small>${money(Math.round(round.bet * e.amount / 100))}</small>`, 1600, "big"); }
     else if (x > 0) say("small");
   },
 };

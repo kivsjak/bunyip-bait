@@ -7,13 +7,15 @@ import { SYMBOLS } from "../game/symbols";
   Нема файлу — малюється як у прототипі (кодом / CSS). Розміри й призначення — README.md.
 */
 export const ASSETS = [
-  "bg/background",
+  "bg/background", "bg/background_portrait",
   ...SYMBOLS.map(c => `symbols/${c}`),
   "characters/yeti", "characters/yeti_hyped", "characters/kev", "characters/kev_hyped",
   // поле (Pixi)
   "ui/frame", "ui/burley_spot", "ui/mult_badge", "ui/bunyip_eyes",
   // бейдж множника за рівнями: 1 = ×2–3, 2 = ×4–7, 3 = ×8–15, 4 = ×16–32; нема файлу рівня → ui/mult_badge
   "ui/mult_badge_1", "ui/mult_badge_2", "ui/mult_badge_3", "ui/mult_badge_4",
+  // підкладка банера: fs = фриспіни, big = великий виграш, max = максимальний
+  "ui/banner_fs", "ui/banner_big", "ui/banner_max",
   // HUD (DOM)
   "ui/logo", "ui/hud_bar", "ui/btn_spin", "ui/btn", "ui/btn_buy", "ui/bubble", "ui/fs_bar", "ui/dialog",
 ];
@@ -40,8 +42,10 @@ function skin(sel: string, k: string) {
 
 // DOM-слоти: фон, лого, HUD, кнопки, бульбашки, діалоги
 export function skinDom() {
-  const bg = url("bg/background");
-  if (bg) document.body.style.backgroundImage = `url("${bg}")`;
+  // фон через CSS-змінні: у портретній орієнтації styles.css бере вертикальний, якщо він є
+  const bg = url("bg/background"), bgP = url("bg/background_portrait"), root = document.documentElement.style;
+  if (bg) root.setProperty("--bg-land", `url("${bg}")`);
+  if (bgP) root.setProperty("--bg-port", `url("${bgP}")`);
   const logo = url("ui/logo"), h1 = document.querySelector("h1")!;
   if (logo) { h1.innerHTML = `<img src="${logo}" alt="Bunyip Bait">`; h1.classList.add("logo"); }
   skin("footer", "ui/hud_bar");
