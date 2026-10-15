@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bunyip Bait</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="./assets/index-CIYIcG8t.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DOjC4bY7.css">
+</head>
+<body>
+<header>
+  <h1>Bunyip Bait</h1>
+</header>
+<div id="stage"><div id="fsbar"></div><div id="banner"></div>
+  <div class="who" id="dazza"><div class="bubble" id="bubble-d"></div><img id="img-d" alt="Dazza the yeti"></div>
+  <div class="who right" id="kev"><div class="bubble" id="bubble-k"></div><img id="img-k" alt="Kev"></div>
+</div>
+<footer>
+  <div class="left">
+    <div class="stat"><span data-i18n="balance">Balance</span><b id="balance">—</b></div>
+    <div class="stat" id="win"><span data-i18n="win">Win</span><b id="winval">0.00</b></div>
+    <div class="bet" aria-label="Bet">
+      <button id="betdown" aria-label="Lower bet">−</button>
+      <div class="stat"><span data-i18n="bet">Bet</span><b id="betval">—</b></div>
+      <button id="betup" aria-label="Raise bet">+</button>
+    </div>
+  </div>
+  <button id="spin" data-i18n="spin">Spin</button>
+  <div class="right">
+    <button id="burley" aria-pressed="false" data-i18n="burley">Burley</button>
+    <button id="turbo" aria-pressed="false" data-i18n="turbo">Turbo</button>
+    <button class="buy" id="buy-bonus" data-i18n="buyBonus">Buy bonus</button>
+    <button class="buy" id="buy-super" data-i18n="buySuper">Super bonus</button>
+    <button id="info" aria-label="Rules" data-i18n="rules">Rules</button>
+  </div>
+</footer>
+<div id="err" role="alert"></div>
+<dialog id="confirm"><p id="confirm-text"></p><button id="confirm-yes" class="buy">OK</button> <button id="confirm-no">Cancel</button></dialog>
+
+<dialog id="rules">
+  <h2 data-i18n="rulesTitle">How to play</h2>
+  <p data-i18n="r1">Land 5 or more matching symbols touching up, down, left or right to win. Winning symbols drop away and new ones fall in.</p>
+  <p data-i18n="r2">Every win leaves burley on its spots. The next win on a burley spot turns it into a ×2 multiplier, then ×3, ×4 and up to ×32. A cluster's win is multiplied by the sum of the multipliers under it.</p>
+  <p data-i18n="r3">Bunyip bite: after the drops end, the bunyip may surface on a multiplier spot and swallow every multiplier next to it into one. The board then refills once more.</p>
+  <p data-i18n="r4">3, 4, 5 or 6 coolers award 10, 12, 15 or 20 free spins. Free spins start with 3–5 burley spots, and spots and multipliers stay for the whole feature. 3 coolers during free spins add 5 more.</p>
+  <h3 data-i18n="paytableTitle">Paytable</h3>
+  <p data-i18n="r7">Pays are multiples of the bet for a cluster of that many symbols.</p>
+  <div class="wrap"><table id="paytable"></table></div>
+  <h3 data-i18n="modesTitle">Modes</h3>
+  <div class="wrap"><table>
+    <tr><th data-i18n="mode">Mode</th><th data-i18n="price">Price</th><th>RTP</th></tr>
+    <tr><td data-i18n="mBase">Normal spin</td><td>1×</td><td>96.50%</td></tr>
+    <tr><td data-i18n="mBurley">Burley on: 1–2 burley spots each spin, free spins more often</td><td>1.25×</td><td>96.50%</td></tr>
+    <tr><td data-i18n="mBonus">Buy bonus</td><td>100×</td><td>96.50%</td></tr>
+    <tr><td data-i18n="mSuper">Super bonus: every spot starts with burley</td><td>200×</td><td>96.50%</td></tr>
+  </table></div>
+  <p data-i18n="r5">Maximum win is 5,000× the bet. The round ends when it is reached. Malfunction voids all pays and plays.</p>
+  <h3 data-i18n="buttonsTitle">Buttons</h3>
+  <p data-i18n="r6">Spin plays one round. − and + change the bet. Burley switches the enhanced mode. Turbo speeds up animations. Buy bonus and Super bonus start free spins straight away.</p>
+  <button id="close" data-i18n="close">Close</button>
+</dialog>
+
+</body>
+</html>
