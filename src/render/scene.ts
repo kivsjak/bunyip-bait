@@ -14,6 +14,8 @@ const badgeLayer = new PIXI.Container(); root.addChild(badgeLayer);
 export const fxLayer = new PIXI.Container(); root.addChild(fxLayer);
 const mask = new PIXI.Graphics(); root.addChild(mask); symLayer.mask = mask;
 let frameSprite: PIXI.Sprite | null = null;
+// ui/frame.png: яку частку картинки з кожного боку займають дошки (виміряно по прозорій дірці PNG)
+const FRAME_HOLE = {l: .12, t: .16, r: .12, b: .158};
 
 export type Sym = PIXI.Container & {code: string};
 export let cell = 80, ox = 0, oy = 0;
@@ -101,16 +103,25 @@ export function layout() {
   const W = app.screen.width, H = app.screen.height;
   const wide = W / H > 1.25;
   let band = 0;
-  if (wide) cell = Math.floor(Math.min(W * .62 / REELS, (H - 20) / ROWS));
-  else { band = Math.min(170, Math.round(H * .26)); cell = Math.floor(Math.min((W - 20) / REELS, (H - 20 - band) / ROWS)); }
+  // з PNG-рамкою поле менше: запас під товщину дошок, у клітинках (поле + 0.24 клітинки — це дірка рамки)
+  const hasFrame = !!tex("ui/frame");
+  const exW = hasFrame ? (REELS + .24) * (FRAME_HOLE.l + FRAME_HOLE.r) / (1 - FRAME_HOLE.l - FRAME_HOLE.r) : 0;
+  const exH = hasFrame ? (ROWS + .24) * (FRAME_HOLE.t + FRAME_HOLE.b) / (1 - FRAME_HOLE.t - FRAME_HOLE.b) : 0;
+  if (wide) cell = Math.floor(Math.min(W * .62 / REELS, (H - 20) / (ROWS + exH)));
+  else { band = Math.min(170, Math.round(H * .26)); cell = Math.floor(Math.min((W - 20) / (REELS + exW), (H - 20 - band) / (ROWS + exH))); }
   const side = (W - cell * REELS) / 2;
   ox = Math.round((W - cell * REELS) / 2); oy = band + Math.round((H - band - cell * ROWS) / 2);
   placeMascots(!wide, side, band, H);
-  // рамка поля: PNG розтягується на поле + 12% клітинки з кожного боку
+  // поле + 12% клітинки з кожного боку: тут темна підкладка, а дірка PNG-рамки лягає рівно на цей прямокутник
   const fx = ox - cell * .12, fy = oy - cell * .12, fw = cell * REELS + cell * .24, fh = cell * ROWS + cell * .24;
   panel.clear();
   const ft = tex("ui/frame");
-  if (ft) { frameSprite ??= root.addChildAt(new PIXI.Sprite(ft), 0); frameSprite.position.set(fx, fy); frameSprite.width = fw; frameSprite.height = fh; }
+  if (ft) {
+    panel.beginFill(0x2b5148, 1); panel.drawRect(fx, fy, fw, fh); panel.endFill();
+    const fW = fw / (1 - FRAME_HOLE.l - FRAME_HOLE.r), fH = fh / (1 - FRAME_HOLE.t - FRAME_HOLE.b);
+    frameSprite ??= root.addChildAt(new PIXI.Sprite(ft), 1);
+    frameSprite.position.set(fx - fW * FRAME_HOLE.l, fy - fH * FRAME_HOLE.t); frameSprite.width = fW; frameSprite.height = fH;
+  }
   else { panel.lineStyle(3, 0x17120d); panel.beginFill(0x2b5148, 1); roughRect(panel, fx, fy, fw, fh, cell * .05, 77); panel.endFill(); }
   mask.clear(); mask.beginFill(0xffffff); mask.drawRect(ox - 4, oy - 4, cell * REELS + 8, cell * ROWS + 8); mask.endFill();
   redrawAll();
