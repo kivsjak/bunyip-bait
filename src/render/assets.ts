@@ -12,6 +12,8 @@ export const ASSETS = [
   "characters/yeti", "characters/yeti_hyped", "characters/kev", "characters/kev_hyped",
   // поле (Pixi)
   "ui/frame", "ui/burley_spot", "ui/mult_badge", "ui/bunyip_eyes",
+  // бейдж множника за рівнями: 1 = ×2–3, 2 = ×4–7, 3 = ×8–15, 4 = ×16–32; нема файлу рівня → ui/mult_badge
+  "ui/mult_badge_1", "ui/mult_badge_2", "ui/mult_badge_3", "ui/mult_badge_4",
   // HUD (DOM)
   "ui/logo", "ui/hud_bar", "ui/btn_spin", "ui/btn", "ui/btn_buy", "ui/bubble", "ui/fs_bar", "ui/dialog",
 ];

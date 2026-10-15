@@ -141,7 +141,8 @@ export function drawSpot(r: number, c: number): PIXI.Container | undefined {
   cont.position.set(p.x, p.y); spotLayer.addChild(cont); spots[r][c] = cont;
   if (mult[r][c] > 0) {
     const bc = new PIXI.Container();
-    const badge = slot("ui/mult_badge", cell * .42, cell * .34);
+    const x = mult[r][c], tier = x >= 16 ? 4 : x >= 8 ? 3 : x >= 4 ? 2 : 1;
+    const badge = slot(`ui/mult_badge_${tier}`, cell * .44, cell * .44) ?? slot("ui/mult_badge", cell * .42, cell * .34);
     if (badge) bc.addChild(badge);
     else { const b = new PIXI.Graphics(); b.lineStyle(3, 0x17120d); b.beginFill(0xf7b538); wobble(b, 0, 0, cell * .21, cell * .17, r + c * 9, 10, .1); b.endFill(); bc.addChild(b); }
     const tx = new PIXI.Text("×" + mult[r][c], {fontFamily: "Permanent Marker", fontSize: Math.max(12, cell * .2), fill: 0x17120d});
