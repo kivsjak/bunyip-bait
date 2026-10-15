@@ -88,6 +88,15 @@ dialog button{color:var(--bone)}
 button.skinned:hover:not(:disabled){filter:brightness(1.12)}
 button.skinned[aria-pressed="true"]{filter:brightness(1.3) saturate(1.3)}
 
+/* кнопки-картинки зі станами (ui/btn_*_normal|pressed|disabled.png, див. assets.ts); !important перебиває #spin і :hover вище */
+button.iconbtn{background:transparent var(--img) center/contain no-repeat !important;border:none !important;box-shadow:none !important;
+  padding:0;color:transparent;font-size:0;width:48px;height:48px;transform:none !important}
+button.iconbtn:active:not(:disabled),button.iconbtn[aria-pressed="true"]{background-image:var(--img-pressed) !important}
+button.iconbtn:disabled{background-image:var(--img-disabled) !important;opacity:1}
+button.iconbtn:hover:not(:disabled){filter:brightness(1.08)}
+#spin.iconbtn{width:88px;height:88px}
+.bet button.iconbtn{width:40px;height:40px}
+
 @media (max-width:640px){
   footer{grid-template-columns:1fr auto;grid-template-areas:"l s" "r r"}
   .left{grid-area:l}.right{grid-area:r;justify-content:center}#spin{grid-area:s}

@@ -16,6 +16,8 @@ export const ASSETS = [
   "ui/mult_badge_1", "ui/mult_badge_2", "ui/mult_badge_3", "ui/mult_badge_4",
   // підкладка банера: fs = фриспіни, big = великий виграш, max = максимальний
   "ui/banner_fs", "ui/banner_big", "ui/banner_max",
+  // кнопки-картинки: ui/btn_<назва>_<стан>.png
+  ...["spin", "minus", "plus", "turbo", "burley", "rules"].flatMap(n => ["normal", "pressed", "disabled"].map(s => `ui/btn_${n}_${s}`)),
   // HUD (DOM)
   "ui/logo", "ui/hud_bar", "ui/btn_spin", "ui/btn", "ui/btn_buy", "ui/bubble", "ui/fs_bar", "ui/dialog",
 ];
@@ -55,4 +57,15 @@ export function skinDom() {
   skin(".bubble", "ui/bubble");
   skin("#fsbar", "ui/fs_bar");
   skin("dialog", "ui/dialog");
+  // кнопка → картинка зі станами; нема normal-файлу → лишається текстова кнопка
+  const ICON_BTNS: Record<string, string> = {spin: "spin", betdown: "minus", betup: "plus", turbo: "turbo", burley: "burley", info: "rules"};
+  for (const [id, n] of Object.entries(ICON_BTNS)) {
+    const u = url(`ui/btn_${n}_normal`), el = document.getElementById(id);
+    if (!u || !el) continue;
+    el.setAttribute("aria-label", el.getAttribute("aria-label") || el.textContent!.trim());
+    el.style.setProperty("--img", `url("${u}")`);
+    el.style.setProperty("--img-pressed", `url("${url(`ui/btn_${n}_pressed`) ?? u}")`);
+    el.style.setProperty("--img-disabled", `url("${url(`ui/btn_${n}_disabled`) ?? u}")`);
+    el.classList.add("iconbtn");
+  }
 }
