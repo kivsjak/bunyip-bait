@@ -27,17 +27,20 @@ const LINES: Record<string, [string, string]> = {
 };
 const HYPE = new Set(["fs", "chomp", "big", "huge", "stir"]);
 let bubbleTimer: ReturnType<typeof setTimeout>;
-export function face(who: string, hyped: boolean) {
+// пози: "" = спокій, "hyped" = руки вгору, "chomp" = йєті кусає, "fishing" = Kev з вудкою; нема файлу пози → спокій
+export const rest = {k: ""};  // поза Kev у спокої: main.ts ставить "fishing", поки ввімкнена прикормка
+export function face(who: string, pose = "") {
   const name = `characters/${who === "d" ? "yeti" : "kev"}`;
-  ($(who === "d" ? "img-d" : "img-k") as HTMLImageElement).src = (hyped && url(name + "_hyped")) || url(name) || "";
+  ($(who === "d" ? "img-d" : "img-k") as HTMLImageElement).src = (pose && url(`${name}_${pose}`)) || url(name) || "";
 }
+const calm = () => { face("d"); face("k", rest.k); };
 export function say(key: string) {
   const [who, text] = LINES[key], el = $(who === "d" ? "bubble-d" : "bubble-k");
   document.querySelectorAll(".bubble").forEach(b => b.classList.remove("on"));
-  face("d", false); face("k", false);
-  if (HYPE.has(key)) { face("d", true); face("k", true); }
+  calm();
+  if (HYPE.has(key)) { face("d", key === "chomp" && url("characters/yeti_chomp") ? "chomp" : "hyped"); face("k", "hyped"); }
   el.textContent = text; el.classList.add("on"); clearTimeout(bubbleTimer);
-  bubbleTimer = setTimeout(() => { el.classList.remove("on"); face("d", false); face("k", false); }, 2600);
+  bubbleTimer = setTimeout(() => { el.classList.remove("on"); calm(); }, 2600);
 }
 
 /* ---------------- обробники подій книги ---------------- */

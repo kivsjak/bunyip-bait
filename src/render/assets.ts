@@ -10,6 +10,7 @@ export const ASSETS = [
   "bg/background", "bg/background_portrait",
   ...SYMBOLS.map(c => `symbols/${c}`),
   "characters/yeti", "characters/yeti_hyped", "characters/kev", "characters/kev_hyped",
+  "characters/yeti_chomp", "characters/kev_fishing",  // йєті на «укусі» буньїпа; Kev, поки ввімкнена прикормка
   // поле (Pixi)
   "ui/frame", "ui/burley_spot", "ui/mult_badge", "ui/bunyip_eyes",
   // бейдж множника за рівнями: 1 = ×2–3, 2 = ×4–7, 3 = ×8–15, 4 = ×16–32; нема файлу рівня → ui/mult_badge

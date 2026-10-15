@@ -5,7 +5,7 @@ import { REELS, ROWS, SYM, PAYS, PAY_HEADS, PAYING } from "./game/symbols";
 import { loadAssets, skinDom, url } from "./render/assets";
 import { app, board, layout } from "./render/scene";
 import { setTurbo, wait, PAUSE } from "./render/anim";
-import { playBook, say, face, round } from "./render/events";
+import { playBook, say, face, round, rest } from "./render/events";
 
 const $ = (id: string) => document.getElementById(id) as HTMLElement;
 applyI18n();
@@ -46,7 +46,10 @@ function updateBet() {
 $("betup").onclick = () => { betIdx = Math.min(betLevels.length - 1, betIdx + 1); updateBet(); };
 $("betdown").onclick = () => { betIdx = Math.max(0, betIdx - 1); updateBet(); };
 $("spin").onclick = () => play(burleyOn ? "burley" : "base");
-$("burley").onclick = e => { burleyOn = !burleyOn; (e.currentTarget as HTMLElement).setAttribute("aria-pressed", String(burleyOn)); };
+$("burley").onclick = e => {
+  burleyOn = !burleyOn; (e.currentTarget as HTMLElement).setAttribute("aria-pressed", String(burleyOn));
+  rest.k = burleyOn ? "fishing" : ""; face("k", rest.k);
+};
 $("turbo").onclick = e => { const b = e.currentTarget as HTMLElement, on = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", String(on)); setTurbo(on); };
 const confirmDlg = $("confirm") as HTMLDialogElement, rulesDlg = $("rules") as HTMLDialogElement;
 function askBuy(price: number, mode: Mode) {
@@ -64,7 +67,7 @@ addEventListener("keydown", e => { if (e.code === "Space" && !e.repeat && docume
 (async function init() {
   try { await document.fonts.load("20px 'Permanent Marker'"); await document.fonts.load("20px 'Patrick Hand'"); } catch {}
   for (let r = 0; r < REELS; r++) for (let c = 0; c < ROWS; c++) board[r][c] = PAYING[Math.floor(Math.random() * PAYING.length)];
-  await loadAssets(); skinDom(); face("d", false); face("k", false); buildPaytable();
+  await loadAssets(); skinDom(); face("d"); face("k"); buildPaytable();
   layout(); app.renderer.on("resize", layout);
   try {
     const a = await rgs.authenticate();
